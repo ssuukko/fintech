@@ -24,7 +24,7 @@ public class Account {
     private User user;
 
     private String accountNumber;
-    private String accountName;  // 계좌 별명
+    private String accountName;  // 계좌 이름 Ex. 월급 통장, 적금 통장... 개인이 다양한 계좌 생성 가능
     private int balance;
 
     @OneToMany(mappedBy = "account")

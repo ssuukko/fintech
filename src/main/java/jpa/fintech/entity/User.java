@@ -1,36 +1,35 @@
 package jpa.fintech.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "users")
+@NoArgsConstructor
 public class User {
 
-    @Id @GeneratedValue
-    @Column(name = "user_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 위에 id는 그냥 운영자 관점에서 식별번호...
+    // 로그인 할때 아이디를 만드는게 맞겠지?
+//    private String userId;
     private String username;
     private String password;
 
     @OneToMany(mappedBy = "user")
     private List<Account> accounts = new ArrayList<>();
 
-    // 사용자 생성 메서드
-    public static User createUser(String username, String password) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        return user;
+    public User(Long id, String userId, String username, String password, List<Account> accounts) {
+        this.id = id;
+//        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.accounts = accounts;
     }
 }
