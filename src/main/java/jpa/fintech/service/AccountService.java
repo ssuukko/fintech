@@ -23,7 +23,6 @@ public class AccountService {
     }
 
     // 메서드명
-    @Transactional
     public Account findOne(Long accountId) {
         return accountRepository.findByAccountId(accountId)
                 // 예외 처리 따로 만드는게 낫을려나?
@@ -31,61 +30,78 @@ public class AccountService {
     }
 
     // 메서드명
-    public List<Account> findByUserId(Long id) {
-        return accountRepository.findByUserId(id);
-    }
-
-    // 입금 처리
-    @Transactional
-    public String deposit(Long accountId, int amount) {
-        // 계좌 조회
-        Account account = findOne(accountId);
-
-        // 입금 금액이 0 이상인지 확인
-        if (amount <= 0) {
-            return "Deposit amount must be greater than 0.";
-        }
-
-        // 입금 처리
-        account.deposit(amount);
-
-        // 계좌 정보 저장
-        accountRepository.save(account);
-
-        return "Deposit successful.";
-    }
-
-    // 출금 처리
-    @Transactional
-    public String withdraw(Long accountId, int amount) {
-        // 계좌 조회
-        Account account = findOne(accountId);
-
-        // 출금 금액이 0 이상인지 확인
-        if (amount <= 0) {
-            return "Withdrawal amount must be greater than 0.";
-        }
-
-        // 잔액이 부족하면 예외 발생
-        if (account.getBalance() < amount) {
-            return "Insufficient balance.";
-        }
-
-        // 출금 처리
-        account.withdraw(amount);
-
-        // 계좌 정보 저장
-        accountRepository.save(account);
-
-        return "Withdrawal successful.";
-    }
-
     public Account findByAccountNumber(String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Account with number " + accountNumber + " not found"));
     }
 
-    public void save(Account account) {
+    // 메서드명
+    public List<Account> findByUserId(Long id) {
+        return accountRepository.findByUserId(id);
+    }
+
+    @Transactional
+    public String deposit(Long accountId, int amount) {
+        Account account = findOne(accountId);
+
+        if (!isValidDepositAmount(amount)) {
+            return "입금 금액은 0원 보다 커야 함";
+        }
+
+        performDeposit(account, amount);
+
+        return "입금 완료";
+    }
+
+    // 출금 처리
+    @Transactional
+    public String withdraw(Long accountId, int amount) {
+        Account account = findOne(accountId);
+
+        if (!isValidWithdrawAmount(amount)) {
+            return "출금 금액은 0원 보다 커야함";
+        }
+
+        if (!hasSufficientBalance(account, amount)) {
+            return "잔액 부족";
+        }
+
+        performWithdraw(account, amount);
+
+        return "출금 완료";
+    }
+
+    // 입금 금액 검증
+    private boolean isValidDepositAmount(int amount) {
+        return amount > 0;
+    }
+
+    // 출금 금액 검증
+    private boolean isValidWithdrawAmount(int amount) {
+        return amount > 0;
+    }
+
+    // 잔액이 충분한지 확인
+    private boolean hasSufficientBalance(Account account, int amount) {
+        return account.getBalance() >= amount;
+    }
+
+    // 입금 처리
+    private void performDeposit(Account account, int amount) {
+        account.deposit(amount);
+        // 계좌 정보 저장
+        save(account);  // 계좌 정보 저장
+    }
+
+    // 출금 처리
+    private void performWithdraw(Account account, int amount) {
+        account.withdraw(amount);
+        // 계좌 정보 저장
+        save(account);  // 계좌 정보 저장
+    }
+
+    // 계좌 저장
+    private void save(Account account) {
         accountRepository.save(account);
     }
 }

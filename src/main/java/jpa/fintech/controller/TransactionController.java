@@ -56,9 +56,7 @@ public class TransactionController {
 
     // 입금 처리
     private void performDeposit(Account fromAccount, Account targetAccount, int amount) {
-        // 출금 계좌에서 금액 차감
         fromAccount.withdraw(amount);
-        // 입금 계좌에서 금액 추가
         targetAccount.deposit(amount);
 
         // 거래 내역 생성
