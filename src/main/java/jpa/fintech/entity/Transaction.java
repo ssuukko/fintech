@@ -1,39 +1,32 @@
 package jpa.fintech.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Transaction {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "from_account_id")
+    private Account fromAccount;  // 출금 계좌
 
-    private int amount;
-    private LocalDateTime transactionDate;
-    private String transactionType;
-    private String status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_account_id")
+    private Account targetAccount;  // 입금 계좌
 
-    public static Transaction createTransaction(Account account, int amount, String transactionType, String status) {
-        Transaction transaction = new Transaction();
-        transaction.setAccount(account);
-        transaction.setAmount(amount);
-        transaction.setTransactionDate(LocalDateTime.now());
-        transaction.setTransactionType(transactionType);
-        transaction.setStatus(status);
-        return transaction;
+    private int amount;  // 거래 금액
+
+    // 생성자
+    public Transaction(Account fromAccount, Account targetAccount, int amount) {
+        this.fromAccount = fromAccount;
+        this.targetAccount = targetAccount;
+        this.amount = amount;
     }
 }
