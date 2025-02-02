@@ -64,7 +64,7 @@ public class TransactionController {
         transactionService.createTransaction(transaction);
 
         // 계좌 정보 저장
-        accountService.save(fromAccount);
-        accountService.save(targetAccount);
+//        accountService.save(fromAccount);
+//        accountService.save(targetAccount);
     }
 }
