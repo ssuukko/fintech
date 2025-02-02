@@ -12,13 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
 
+    // id 타입 Long Integer int
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // 위에 id는 그냥 운영자 관점에서 식별번호...
     // 로그인 할때 아이디를 만드는게 맞겠지?
-//    private String userId;
+    // private int userId;
     private String username;
     private String password;
 

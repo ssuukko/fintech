@@ -22,17 +22,16 @@ public class AccountService {
         return savedAccount.getAccountNumber();
     }
 
+    // 메서드명
     @Transactional
     public Account findOne(Long accountId) {
-        return accountRepository.findById(accountId)
+        return accountRepository.findByAccountId(accountId)
+                // 예외 처리 따로 만드는게 낫을려나?
                 .orElseThrow(() -> new IllegalArgumentException("Invalid account ID: " + accountId));
     }
 
-    public List<Account> findByUserId(Long userId) {
-        return accountRepository.findByUserId(userId);
-    }
-
-    public List<Account> findAll() {
-        return accountRepository.findAll();
+    // 메서드명
+    public List<Account> findByUserId(Long id) {
+        return accountRepository.findByUserId(id);
     }
 }

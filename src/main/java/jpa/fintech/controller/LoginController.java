@@ -1,12 +1,15 @@
 package jpa.fintech.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import jpa.fintech.dto.LoginDTO;
+import jpa.fintech.service.LoginService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class LoginController {
+
+    private final LoginService loginService;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -14,9 +17,9 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
-
-        if ("user".equals(username) && "password".equals(password)) {
+    public String login(@RequestBody LoginDTO loginDTO) {
+        boolean isAuthenticated = loginService.login(loginDTO);
+        if (isAuthenticated) {
             return "redirect:/home";
         } else {
             return "redirect:/login?error=true";

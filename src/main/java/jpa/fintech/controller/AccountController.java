@@ -36,16 +36,10 @@ public class AccountController {
         return ResponseEntity.ok(account);
     }
 
-    @GetMapping("/users/{userId}/accounts")
-    public ResponseEntity<List<Account>> findByUserId(@PathVariable Long userId) {
-        List<Account> accounts = accountService.findByUserId(userId);
+    //전 계좌 조회 - 메서드명
+    @GetMapping("/users/{id}/accounts")
+    public ResponseEntity<List<Account>> findByUserId(@PathVariable Long id) {
+        List<Account> accounts = accountService.findByUserId(id);
         return ResponseEntity.ok(accounts);
-    }
-
-    @GetMapping("/accounts")
-    public String accounts(Model model) {
-        List<Account> accounts = accountService.findAll();
-        model.addAttribute("accounts", accounts);
-        return "accounts";
     }
 }

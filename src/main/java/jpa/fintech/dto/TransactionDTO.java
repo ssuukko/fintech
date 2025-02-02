@@ -6,16 +6,16 @@ import java.time.LocalDateTime;
 
 
 @Getter
-public class TransactionDto {
+public class TransactionDTO {
 
     private Long id;
     private Double amount;
     private LocalDateTime transactionDate;
     private String transactionType;
 
-    public TransactionDto() {}
+    public TransactionDTO() {}
 
-    public TransactionDto(Long id, Double amount, LocalDateTime transactionDate, String transactionType) {
+    public TransactionDTO(Long id, Double amount, LocalDateTime transactionDate, String transactionType) {
         this.id = id;
         this.amount = amount;
         this.transactionDate = transactionDate;

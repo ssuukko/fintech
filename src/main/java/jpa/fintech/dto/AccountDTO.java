@@ -3,16 +3,16 @@ package jpa.fintech.dto;
 import lombok.Getter;
 
 @Getter
-public class AccountDto {
+public class AccountDTO {
 
     private Long id;
     private String accountNumber;
     private Double balance;
 
-    public AccountDto() {
+    public AccountDTO() {
     }
 
-    public AccountDto(Long id, String accountNumber, Double balance) {
+    public AccountDTO(Long id, String accountNumber, Double balance) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.balance = balance;
