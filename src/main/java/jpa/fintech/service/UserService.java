@@ -1,5 +1,7 @@
 package jpa.fintech.service;
 
+import jpa.fintech.dto.request.UserRequestJoinDTO;
+import jpa.fintech.dto.response.JoinResponse;
 import jpa.fintech.entity.User;
 import jpa.fintech.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,19 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    //AUTOWIRED 하는게 낫나?
     private final UserRepository userRepository;
 
     @Transactional
-    public Long join(User user) {
-        // 중복 처리 필요할듯(같은 아이디)
+    public JoinResponse join(UserRequestJoinDTO requestDTO) {
+        User user = User.builder()
+                .username(requestDTO.getUserName())
+                .password(requestDTO.getPassword())
+                .build();
+
         userRepository.save(user);
-        return user.getId();
+
+        return new JoinResponse(user.getUsername(), "회원가입 성공");
     }
 
     public User findOne(Long userId) {
-        return userRepository.findById(userId)
+        return userRepository.findById(String.valueOf(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
     }
-
 }
