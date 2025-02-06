@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor
-public class LoginRequestDTO {
-
-    private String username;
-    private String password;
-
+public class RequestAccountDTO {
+    private String accountName;
+    private int initialBalance;
 }
