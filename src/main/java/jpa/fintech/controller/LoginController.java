@@ -23,7 +23,6 @@ public class LoginController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
         boolean isAuthenticated = loginService.login(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());
         if (isAuthenticated) {
-            // 로그인 성공 후 계좌 목록 반환
             List<ResponseAccountDTO> accountList = accountService.getAccountList(loginRequestDTO.getUsername());
             return ResponseEntity.ok(new LoginResponseDTO("로그인 성공", accountList.toString()));
         } else {
