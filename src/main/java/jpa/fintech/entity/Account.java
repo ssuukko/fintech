@@ -1,21 +1,20 @@
 package jpa.fintech.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Account {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "account_id")
     private Long id;
 
@@ -30,20 +29,11 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactions = new ArrayList<>();
 
-    public static Account createAccount(User user, String accountNumber, String accountName, int balance) {
-        Account account = new Account();
-        account.setUser(user);
-        account.setAccountNumber(accountNumber);
-        account.setAccountName(accountName);
-        account.setBalance(balance);
-        return account;
-    }
-
-    public void deposit(int amount) {
-        this.balance += amount;
-    }
-
-    public void withdraw(int amount) {
-        this.balance -= amount;
-    }
+//    public void deposit(int amount) {
+//        this.balance += amount;
+//    }
+//
+//    public void withdraw(int amount) {
+//        this.balance -= amount;
+//    }
 }
